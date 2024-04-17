@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticketclient-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketclient
+  template:
+    metadata:
+      labels:
+        app: ticketclient
+    spec:
+      containers:
+      - name: ticketclient
+        image: bsatyadeep/ticketclient
+        imagePullPolicy: Never
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticketclient-service
+spec:
+  selector:
+    app: ticketclient
+  ports:
+  - name: ticketclient
+    protocol: TCP
+    port: 3000
+    targetPort: 3000
